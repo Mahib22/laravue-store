@@ -5,9 +5,9 @@
         <div class="row">
           <div class="col-lg-2 col-md-2">
             <div class="logo">
-              <a href="./index.html" class="text-dark h5 text-uppercase">
-                laravue store
-              </a>
+              <router-link to="/" class="text-dark h5 text-uppercase"
+                >laravue store</router-link
+              >
             </div>
           </div>
           <div class="col-lg-7 col-md-7"></div>
