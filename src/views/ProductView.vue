@@ -1,7 +1,7 @@
 <template>
   <div class="product">
     <Header />
-    <Breadcrumb />
+    <Breadcrumb page-name="Detail" />
     <ProductDetail />
     <ProductRelated />
     <Footer />

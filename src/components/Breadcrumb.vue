@@ -5,7 +5,7 @@
         <div class="col-lg-12">
           <div class="breadcrumb-text product-more">
             <router-link to="/"><i class="fa fa-home"></i> Home</router-link>
-            <span>Detail</span>
+            <span>{{ pageName }}</span>
           </div>
         </div>
       </div>
@@ -16,5 +16,8 @@
 <script>
 export default {
   name: "Breadcrumb",
+  props: {
+    pageName: String,
+  },
 };
 </script>
