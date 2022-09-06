@@ -14,6 +14,7 @@ import Footer from "@/components/Footer.vue";
 
 export default {
   name: "HomeView",
+
   components: {
     Header,
     Product,

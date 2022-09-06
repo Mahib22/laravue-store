@@ -17,49 +17,42 @@
                 Keranjang Belanja &nbsp;
                 <a href="#">
                   <i class="icon_bag_alt"></i>
-                  <span>3</span>
+                  <span>{{ userCart.length }}</span>
                 </a>
                 <div class="cart-hover">
                   <div class="select-items">
                     <table>
-                      <tbody>
-                        <tr>
+                      <tbody v-if="userCart.length > 0">
+                        <tr v-for="cart in userCart" :key="cart.id">
                           <td class="si-pic">
-                            <img src="img/select-product-1.jpg" alt="" />
+                            <img class="photo-item" :src="cart.photo" alt="" />
                           </td>
                           <td class="si-text">
                             <div class="product-selected">
-                              <p>$60.00 x 1</p>
-                              <h6>Kabino Bedside Table</h6>
+                              <p>${{ cart.price }} x 1</p>
+                              <h6>{{ cart.name }}</h6>
                             </div>
                           </td>
-                          <td class="si-close">
+                          <td @click="removeItem(cart.id)" class="si-close">
                             <i class="ti-close"></i>
                           </td>
                         </tr>
+                      </tbody>
+                      <tbody v-else>
                         <tr>
-                          <td class="si-pic">
-                            <img src="img/select-product-2.jpg" alt="" />
-                          </td>
-                          <td class="si-text">
-                            <div class="product-selected">
-                              <p>$60.00 x 1</p>
-                              <h6>Kabino Bedside Table</h6>
-                            </div>
-                          </td>
-                          <td class="si-close">
-                            <i class="ti-close"></i>
-                          </td>
+                          <td>Keranjang Kosong</td>
                         </tr>
                       </tbody>
                     </table>
                   </div>
                   <div class="select-total">
                     <span>total:</span>
-                    <h5>$120.00</h5>
+                    <h5>${{ totalPrice }}.00</h5>
                   </div>
                   <div class="select-button">
-                    <a href="#" class="primary-btn view-card">VIEW CARD</a>
+                    <router-link to="/cart" class="primary-btn view-card"
+                      >VIEW CARD</router-link
+                    >
                     <a href="#" class="primary-btn checkout-btn">CHECK OUT</a>
                   </div>
                 </div>
@@ -75,5 +68,50 @@
 <script>
 export default {
   name: "Header",
+
+  data() {
+    return {
+      userCart: [],
+    };
+  },
+
+  methods: {
+    removeItem(idx) {
+      let cartUserStorage = JSON.parse(localStorage.getItem("userCart"));
+      let itemCartUserStorage = cartUserStorage.map(
+        (itemCartUserStorage) => itemCartUserStorage.id
+      );
+      let index = itemCartUserStorage.findIndex((id) => id == idx);
+
+      this.userCart.splice(index, 1);
+      const parsed = JSON.stringify(this.userCart);
+      localStorage.setItem("userCart", parsed);
+    },
+  },
+
+  mounted() {
+    if (localStorage.getItem("userCart")) {
+      try {
+        this.userCart = JSON.parse(localStorage.getItem("userCart"));
+      } catch (e) {
+        localStorage.removeItem("userCart");
+      }
+    }
+  },
+
+  computed: {
+    totalPrice() {
+      return this.userCart.reduce(function (items, data) {
+        return items + data.price;
+      }, 0);
+    },
+  },
 };
 </script>
+
+<style scoped>
+.photo-item {
+  width: 80px;
+  height: 80px;
+}
+</style>
